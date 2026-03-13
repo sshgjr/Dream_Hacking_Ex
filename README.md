@@ -1,36 +1,72 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dream Hacking - 꿈 해몽 AI (데모)
 
-## Getting Started
+AI 기반 꿈 해몽 웹 서비스의 데모 버전입니다. 꿈 내용을 입력하면 꿈의 의미, 주의사항, 좋은 징조를 분석해 보여줍니다.
 
-First, run the development server:
+> 이 저장소는 데모/포트폴리오 용도입니다. API 키 없이 바로 실행할 수 있습니다.
+> 정식 버전에서는 Claude API를 활용한 실제 AI 해몽 분석을 제공합니다.
+
+## Screenshots
+
+<!-- 스크린샷을 추가해 주세요 -->
+| 메인 화면 | 결과 화면 |
+|:---------:|:---------:|
+| ![메인](./screenshots/main.png) | ![결과](./screenshots/result.png) |
+
+## 기술 스택
+
+| 구분 | 기술 |
+|------|------|
+| 프레임워크 | Next.js 16 (App Router) |
+| 언어 | TypeScript |
+| UI 라이브러리 | React 19 |
+| 스타일링 | Tailwind CSS 4 |
+| 3D 비주얼 | Spline (`@splinetool/react-spline`) |
+| AI (정식 버전) | Claude API (`@anthropic-ai/sdk`) |
+
+## 주요 기능
+
+- **AI 꿈 해몽** - 꿈 내용을 분석하여 의미 / 주의사항 / 좋은 징조 3가지로 해석
+- **3D 배경** - Spline을 활용한 몽환적인 3D 배경 씬
+- **인터랙티브 UI** - 스트리밍 응답, 타이핑 애니메이션, 카드 전환 효과
+- **커서 이펙트** - 마우스 움직임에 반응하는 시각 효과
+- **반응형 디자인** - 모바일/데스크톱 대응
+
+## 시작하기
 
 ```bash
+# 의존성 설치
+npm install
+
+# 개발 서버 실행
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+[http://localhost:3000](http://localhost:3000)에서 확인할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+> 데모 버전이므로 별도의 API 키 설정이 필요하지 않습니다.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 프로젝트 구조
 
-## Learn More
+```
+app/
+├── page.tsx              # 메인 페이지 (3D 배경 + 꿈 입력 폼)
+├── result/page.tsx       # 해몽 결과 페이지
+├── api/interpret/route.ts # 해몽 API 엔드포인트
+└── globals.css           # 글로벌 스타일
+components/
+├── SplineBackground.tsx  # Spline 3D 배경
+├── DreamInput.tsx        # 꿈 입력 폼
+└── ResultCard.tsx        # 결과 카드
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 정식 버전 안내
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+정식 버전에서는 Anthropic Claude API를 연동하여 실제 AI 해몽 분석을 제공합니다. `.env.local`에 다음 환경 변수를 설정하면 됩니다:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+ANTHROPIC_API_KEY=your-api-key
+```
 
-## Deploy on Vercel
+## 링크
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- GitHub: [https://github.com/sshgjr/Dream_Hacking_Ex](https://github.com/sshgjr/Dream_Hacking_Ex)

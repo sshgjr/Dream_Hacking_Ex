@@ -9,7 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.78.0",
     "@splinetool/react-spline": "^4.1.0",
     "@splinetool/runtime": "^1.12.69",
     "next": "16.1.6",
@@ -24,6 +23,6 @@
     "eslint": "^9",
     "eslint-config-next": "16.1.6",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "5.9.3"
   }
 }

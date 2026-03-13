@@ -35,6 +35,13 @@ export default function ResultPage() {
     <div className="relative min-h-screen flex flex-col items-center px-5 py-20 page-enter">
       <SplineBackground />
 
+      {/* Demo badge - top center */}
+      <div className="demo-badge">
+        <span className="oracle-symbol" style={{ fontSize: '8px' }}>✦</span>
+        {' '}데모 버전{' '}
+        <span className="oracle-symbol" style={{ fontSize: '8px' }}>✦</span>
+      </div>
+
       <div className="relative z-10 w-full max-w-2xl stagger-enter">
         {/* Back */}
         <button onClick={() => router.push("/")} className="back-link mb-10 flex items-center gap-2 text-sm">
@@ -100,6 +107,12 @@ export default function ResultPage() {
             label="III · Fortune"
             content={result.fortune}
           />
+        </div>
+
+        {/* Demo notice */}
+        <div className="demo-result-notice mt-10">
+          <p>이 결과는 데모용 미리 작성된 응답입니다.</p>
+          <p>실제 버전에서는 Claude AI가 꿈을 분석하여 맞춤형 해몽을 제공합니다.</p>
         </div>
 
         {/* Bottom */}

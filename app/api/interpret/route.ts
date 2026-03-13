@@ -12,18 +12,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const text = await interpretDream(dream);
+    // 실제 API 호출 느낌을 위한 인위적 지연 (1~2초)
+    await new Promise((resolve) =>
+      setTimeout(resolve, 1000 + Math.random() * 1000)
+    );
 
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      return NextResponse.json(
-        { error: "AI 응답을 처리할 수 없습니다. 다시 시도해주세요." },
-        { status: 500 }
-      );
-    }
+    const result = await interpretDream(dream);
 
-    const parsed = JSON.parse(jsonMatch[0]);
-    return NextResponse.json(parsed);
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Interpret API error:", error);
     return NextResponse.json(

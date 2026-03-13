@@ -1,26 +1,258 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Instrument+Sans:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --navy: #0a0e1a;
+  --navy-light: #111827;
+  --gold: #c9a84c;
+  --gold-light: #e8d48b;
+  --gold-dim: rgba(201, 168, 76, 0.15);
+  --mist: #7b9cc2;
+  --mist-dim: rgba(123, 156, 194, 0.12);
+  --ivory: #f0ead6;
+  --ivory-dim: rgba(240, 234, 214, 0.7);
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body: 'Instrument Sans', system-ui, sans-serif;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-background: var(--navy);
+  --color-foreground: var(--ivory);
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+  --color-mist: var(--mist);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--navy);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+}
+
+/* ── Grain Overlay ── */
+.grain-overlay::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ── Starfield ── */
+.starfield {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: var(--gold-light);
+  border-radius: 50%;
+  animation: twinkle var(--duration, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+}
+
+.star--large {
+  width: 3px;
+  height: 3px;
+  box-shadow: 0 0 6px rgba(201, 168, 76, 0.4);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0; }
+  50% { opacity: var(--max-opacity, 0.8); }
+}
+
+/* ── Shimmer Button ── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.btn-oracle {
+  position: relative;
+  background: linear-gradient(135deg, var(--gold) 0%, #b8943f 50%, var(--gold-light) 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+  color: var(--navy);
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+}
+
+.btn-oracle:hover {
+  box-shadow: 0 0 30px rgba(201, 168, 76, 0.4), 0 0 60px rgba(201, 168, 76, 0.15);
+  transform: translateY(-1px);
+}
+
+.btn-oracle:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  animation: none;
+  transform: none;
+}
+
+/* ── Tarot Card ── */
+@keyframes cardReveal {
+  0% {
+    opacity: 0;
+    transform: rotateY(90deg) scale(0.8);
+  }
+  60% {
+    opacity: 1;
+    transform: rotateY(-5deg) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: rotateY(0deg) scale(1);
+  }
+}
+
+.tarot-card {
+  perspective: 1000px;
+  opacity: 0;
+  animation: cardReveal 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.tarot-card:nth-child(1) { animation-delay: 0.15s; }
+.tarot-card:nth-child(2) { animation-delay: 0.4s; }
+.tarot-card:nth-child(3) { animation-delay: 0.65s; }
+
+.tarot-card-inner {
+  position: relative;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  background: linear-gradient(
+    170deg,
+    rgba(201, 168, 76, 0.06) 0%,
+    rgba(10, 14, 26, 0.9) 40%,
+    rgba(10, 14, 26, 0.95) 100%
+  );
+  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.tarot-card-inner:hover {
+  border-color: rgba(201, 168, 76, 0.5);
+  box-shadow: 0 0 40px rgba(201, 168, 76, 0.08), inset 0 0 30px rgba(201, 168, 76, 0.03);
+  transform: translateY(-4px);
+}
+
+/* Corner decorations */
+.tarot-card-inner::before,
+.tarot-card-inner::after {
+  content: '✦';
+  position: absolute;
+  color: var(--gold);
+  opacity: 0.35;
+  font-size: 10px;
+}
+
+.tarot-card-inner::before {
+  top: 12px;
+  left: 14px;
+}
+
+.tarot-card-inner::after {
+  bottom: 12px;
+  right: 14px;
+}
+
+/* ── Decorative Line ── */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.3;
+}
+
+/* ── Text Reveal ── */
+@keyframes textFadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.text-reveal {
+  opacity: 0;
+  animation: textFadeIn 0.6s ease-out forwards;
+}
+
+/* ── Input Glow ── */
+.dream-input {
+  border: 1px solid rgba(201, 168, 76, 0.15);
+  background: rgba(201, 168, 76, 0.03);
+  transition: all 0.3s ease;
+  font-family: var(--font-body);
+}
+
+.dream-input:focus {
+  outline: none;
+  border-color: rgba(201, 168, 76, 0.4);
+  background: rgba(201, 168, 76, 0.06);
+  box-shadow: 0 0 20px rgba(201, 168, 76, 0.06), inset 0 0 20px rgba(201, 168, 76, 0.02);
+}
+
+.dream-input::placeholder {
+  color: rgba(240, 234, 214, 0.25);
+  font-style: italic;
+}
+
+/* ── Page Fade ── */
+@keyframes pageFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.page-enter {
+  animation: pageFade 0.5s ease-out forwards;
+}
+
+/* ── Floating Subtitle ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+.float-subtle {
+  animation: float 4s ease-in-out infinite;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 168, 76, 0.2);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 168, 76, 0.35);
+}
+
+/* ── Back Button ── */
+.back-link {
+  color: rgba(201, 168, 76, 0.5);
+  font-family: var(--font-display);
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: var(--gold);
+}
+
+/* ── Dream Quote Box ── */
+.dream-quote {
+  position: relative;
+  border-left: 2px solid rgba(201, 168, 76, 0.3);
+  background: rgba(201, 168, 76, 0.03);
 }

@@ -35,7 +35,7 @@ export default function ResultPage() {
     <div className="relative min-h-screen flex flex-col items-center px-5 py-20 page-enter">
       <SplineBackground />
 
-      <div className="relative z-10 w-full max-w-2xl">
+      <div className="relative z-10 w-full max-w-2xl stagger-enter">
         {/* Back */}
         <button onClick={() => router.push("/")} className="back-link mb-10 flex items-center gap-2 text-sm">
           ← 다시 해몽하기
@@ -47,10 +47,12 @@ export default function ResultPage() {
             className="text-xs tracking-[0.3em] uppercase mb-4"
             style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', opacity: 0.5 }}
           >
-            ✦ Reading Complete ✦
+            <span className="oracle-symbol">✦</span>
+            {' '}Reading Complete{' '}
+            <span className="oracle-symbol">✦</span>
           </div>
           <h1
-            className="text-5xl md:text-6xl mb-3"
+            className="text-5xl md:text-6xl mb-3 title-glow"
             style={{
               fontFamily: 'var(--font-display)',
               fontWeight: 300,
@@ -105,7 +107,7 @@ export default function ResultPage() {
           <div className="gold-line w-16 mx-auto mb-8" />
           <button
             onClick={() => router.push("/")}
-            className="px-8 py-3 rounded-xl text-sm tracking-[0.15em] uppercase transition-all"
+            className="px-8 py-3 rounded-xl text-sm tracking-[0.15em] uppercase transition-all duration-300"
             style={{
               border: '1px solid rgba(201,168,76,0.2)',
               color: 'var(--gold)',
@@ -115,10 +117,12 @@ export default function ResultPage() {
             onMouseEnter={(e) => {
               e.currentTarget.style.borderColor = 'rgba(201,168,76,0.5)';
               e.currentTarget.style.background = 'rgba(201,168,76,0.05)';
+              e.currentTarget.style.boxShadow = '0 0 30px rgba(201,168,76,0.1)';
             }}
             onMouseLeave={(e) => {
               e.currentTarget.style.borderColor = 'rgba(201,168,76,0.2)';
               e.currentTarget.style.background = 'transparent';
+              e.currentTarget.style.boxShadow = 'none';
             }}
           >
             다른 꿈 해몽하기

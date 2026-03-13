@@ -43,6 +43,12 @@ body {
   background-size: 200px 200px;
 }
 
+/* ── Hide Spline "Move your mouse" hint overlay ── */
+.spline-wrapper canvas ~ * {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* ── Starfield ── */
 .starfield {
   position: fixed;
@@ -74,6 +80,54 @@ body {
   50% { opacity: var(--max-opacity, 0.8); }
 }
 
+/* ── Shooting Star ── */
+.shooting-star {
+  position: absolute;
+  width: var(--length, 100px);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    rgba(232, 212, 139, 0),
+    rgba(232, 212, 139, 0.6) 40%,
+    rgba(255, 255, 255, 0.9)
+  );
+  border-radius: 1px;
+  transform-origin: left center;
+  transform: rotate(var(--angle, 30deg));
+  animation: shootingStar var(--speed, 0.8s) ease-out forwards;
+  filter: blur(0.5px);
+}
+
+.shooting-star::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4px;
+  height: 4px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(232, 212, 139, 0.8);
+}
+
+@keyframes shootingStar {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--angle, 30deg)) translateX(-20px) scaleX(0.3);
+  }
+  15% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 0.8;
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--angle, 30deg)) translateX(300px) scaleX(1);
+  }
+}
+
 /* ── Shimmer Button ── */
 @keyframes shimmer {
   0% { background-position: -200% center; }
@@ -89,19 +143,46 @@ body {
   font-family: var(--font-display);
   font-weight: 600;
   letter-spacing: 0.08em;
-  transition: all 0.3s ease;
+  overflow: hidden;
+}
+
+.btn-oracle::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    105deg,
+    transparent 20%,
+    rgba(255, 255, 255, 0.2) 40%,
+    rgba(255, 255, 255, 0.25) 50%,
+    rgba(255, 255, 255, 0.2) 60%,
+    transparent 80%
+  );
+  background-size: 250% 100%;
+  animation: btnSheen 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes btnSheen {
+  0%, 100% { background-position: 200% center; }
+  50% { background-position: -200% center; }
 }
 
 .btn-oracle:hover {
-  box-shadow: 0 0 30px rgba(201, 168, 76, 0.4), 0 0 60px rgba(201, 168, 76, 0.15);
-  transform: translateY(-1px);
+  box-shadow:
+    0 0 30px rgba(201, 168, 76, 0.4),
+    0 0 60px rgba(201, 168, 76, 0.15),
+    0 4px 20px rgba(201, 168, 76, 0.3);
 }
 
 .btn-oracle:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.btn-oracle:disabled::before {
   animation: none;
-  transform: none;
 }
 
 /* ── Tarot Card ── */
@@ -140,13 +221,15 @@ body {
     rgba(10, 14, 26, 0.95) 100%
   );
   backdrop-filter: blur(20px);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
 }
 
 .tarot-card-inner:hover {
   border-color: rgba(201, 168, 76, 0.5);
-  box-shadow: 0 0 40px rgba(201, 168, 76, 0.08), inset 0 0 30px rgba(201, 168, 76, 0.03);
-  transform: translateY(-4px);
+  box-shadow:
+    0 0 40px rgba(201, 168, 76, 0.1),
+    0 0 80px rgba(201, 168, 76, 0.04),
+    inset 0 0 30px rgba(201, 168, 76, 0.03);
 }
 
 /* Corner decorations */
@@ -157,6 +240,12 @@ body {
   color: var(--gold);
   opacity: 0.35;
   font-size: 10px;
+  transition: opacity 0.4s ease;
+}
+
+.tarot-card-inner:hover::before,
+.tarot-card-inner:hover::after {
+  opacity: 0.7;
 }
 
 .tarot-card-inner::before {
@@ -187,11 +276,51 @@ body {
   animation: textFadeIn 0.6s ease-out forwards;
 }
 
+/* ── Staggered Entrance ── */
+@keyframes staggerUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+  }
+}
+
+.stagger-enter > * {
+  opacity: 0;
+  animation: staggerUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.stagger-enter > *:nth-child(1) { animation-delay: 0.1s; }
+.stagger-enter > *:nth-child(2) { animation-delay: 0.25s; }
+.stagger-enter > *:nth-child(3) { animation-delay: 0.4s; }
+.stagger-enter > *:nth-child(4) { animation-delay: 0.55s; }
+.stagger-enter > *:nth-child(5) { animation-delay: 0.7s; }
+.stagger-enter > *:nth-child(6) { animation-delay: 0.85s; }
+
+/* ── Title Glow Pulse ── */
+@keyframes titleGlow {
+  0%, 100% {
+    text-shadow: 0 0 20px rgba(201, 168, 76, 0), 0 0 40px rgba(201, 168, 76, 0);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(201, 168, 76, 0.15), 0 0 60px rgba(201, 168, 76, 0.08);
+  }
+}
+
+.title-glow {
+  animation: titleGlow 4s ease-in-out infinite;
+}
+
 /* ── Input Glow ── */
 .dream-input {
   border: 1px solid rgba(201, 168, 76, 0.15);
   background: rgba(201, 168, 76, 0.03);
-  transition: all 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
   font-family: var(--font-body);
 }
 
@@ -199,7 +328,10 @@ body {
   outline: none;
   border-color: rgba(201, 168, 76, 0.4);
   background: rgba(201, 168, 76, 0.06);
-  box-shadow: 0 0 20px rgba(201, 168, 76, 0.06), inset 0 0 20px rgba(201, 168, 76, 0.02);
+  box-shadow:
+    0 0 20px rgba(201, 168, 76, 0.08),
+    0 0 60px rgba(201, 168, 76, 0.03),
+    inset 0 0 20px rgba(201, 168, 76, 0.02);
 }
 
 .dream-input::placeholder {
@@ -207,24 +339,68 @@ body {
   font-style: italic;
 }
 
+/* ── Error Shake ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  15% { transform: translateX(-6px); }
+  30% { transform: translateX(5px); }
+  45% { transform: translateX(-4px); }
+  60% { transform: translateX(3px); }
+  75% { transform: translateX(-2px); }
+}
+
+.animate-shake {
+  animation: shake 0.5s ease-in-out;
+}
+
+/* ── Loading Dots ── */
+.loading-dots::after {
+  content: '';
+  animation: dots 1.5s steps(4, end) infinite;
+}
+
+@keyframes dots {
+  0% { content: ''; }
+  25% { content: '.'; }
+  50% { content: '..'; }
+  75% { content: '...'; }
+}
+
 /* ── Page Fade ── */
 @keyframes pageFade {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .page-enter {
-  animation: pageFade 0.5s ease-out forwards;
+  animation: pageFade 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 /* ── Floating Subtitle ── */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+  50% { transform: translateY(-6px); }
 }
 
 .float-subtle {
   animation: float 4s ease-in-out infinite;
+}
+
+/* ── Oracle Symbol Spin ── */
+@keyframes oracleSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.oracle-symbol {
+  display: inline-block;
+  animation: oracleSpin 20s linear infinite;
 }
 
 /* ── Scrollbar ── */
@@ -248,6 +424,7 @@ body {
 
 .back-link:hover {
   color: var(--gold);
+  transform: translateX(-4px);
 }
 
 /* ── Dream Quote Box ── */
@@ -255,4 +432,10 @@ body {
   position: relative;
   border-left: 2px solid rgba(201, 168, 76, 0.3);
   background: rgba(201, 168, 76, 0.03);
+  transition: all 0.3s ease;
+}
+
+.dream-quote:hover {
+  border-left-color: rgba(201, 168, 76, 0.5);
+  background: rgba(201, 168, 76, 0.05);
 }

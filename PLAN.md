@@ -12,7 +12,7 @@
 | 언어 | TypeScript |
 | 스타일링 | Tailwind CSS |
 | 3D 비주얼 | Spline (`@splinetool/react-spline`) |
-| AI | Google Gemini API (`@google/generative-ai`) |
+| AI | Claude API (`@anthropic-ai/sdk`, claude-sonnet-4-6) |
 | 배포 | Vercel |
 
 ## Spline 3D 씬
@@ -35,7 +35,7 @@
 - 최소 10자 이상 입력 유효성 검사
 
 ### 2. AI 해몽 분석
-- Google Gemini API를 사용하여 꿈 내용 분석
+- Claude API를 사용하여 꿈 내용 분석
 - API Route: `POST /api/interpret`
 - 스트리밍 응답으로 결과를 실시간 표시
 
@@ -58,16 +58,16 @@ dream_hacking/
 │   │   └── page.tsx        # 해몽 결과 페이지
 │   ├── api/
 │   │   └── interpret/
-│   │       └── route.ts    # Gemini AI 해몽 API
+│   │       └── route.ts    # Claude 해몽 API
 │   └── globals.css         # 글로벌 스타일
 ├── components/
 │   ├── SplineBackground.tsx  # Spline 3D 배경 컴포넌트
 │   ├── DreamInput.tsx        # 꿈 입력 폼
 │   └── ResultCard.tsx        # 결과 카드 컴포넌트
 ├── lib/
-│   └── gemini.ts              # Gemini API 클라이언트 설정
+│   └── claude.ts              # Claude API 클라이언트 설정
 ├── public/
-├── .env.local                # GEMINI_API_KEY
+├── .env.local                # ANTHROPIC_API_KEY
 ├── next.config.ts
 ├── tailwind.config.ts
 ├── tsconfig.json
@@ -96,7 +96,7 @@ dream_hacking/
 
 ## AI 프롬프트 설계
 
-Gemini에게 전달할 시스템 프롬프트:
+Claude에게 전달할 시스템 프롬프트:
 
 ```
 당신은 동양과 서양의 꿈 해몽 전문가입니다.
@@ -120,13 +120,13 @@ Gemini에게 전달할 시스템 프롬프트:
 ## 환경 변수
 
 ```env
-GEMINI_API_KEY=AIza...
+ANTHROPIC_API_KEY=sk-ant-...
 ```
 
 ## 배포 (Vercel)
 
 1. GitHub 레포 연결
-2. 환경 변수 `GEMINI_API_KEY` 설정
+2. 환경 변수 `ANTHROPIC_API_KEY` 설정
 3. Framework Preset: Next.js (자동 감지)
 4. 빌드 & 배포
 
@@ -135,7 +135,7 @@ GEMINI_API_KEY=AIza...
 1. Next.js 프로젝트 초기화 + Tailwind 설정
 2. Spline 3D 배경 컴포넌트
 3. 메인 페이지 (입력 폼) UI
-4. Gemini API 연동 (`/api/interpret`)
+4. Claude API 연동 (`/api/interpret`)
 5. 결과 페이지 UI
 6. 스트리밍 응답 + 타이핑 애니메이션
 7. 반응형 + 마무리 폴리싱

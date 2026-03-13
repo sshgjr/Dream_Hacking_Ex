@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CursorGlow from "@/components/CursorGlow";
 
 export const metadata: Metadata = {
   title: "Dream Hacking — AI 꿈 해몽",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ko">
       <body className="grain-overlay antialiased">
+        <CursorGlow />
         {children}
       </body>
     </html>

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { model } from "@/lib/gemini";
+import { interpretDream } from "@/lib/claude";
 
 export async function POST(request: NextRequest) {
   try {
@@ -12,11 +12,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const result = await model.generateContent(
-      `다음 꿈을 해몽해주세요:\n\n${dream}`
-    );
-
-    const text = result.response.text();
+    const text = await interpretDream(dream);
 
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
@@ -27,7 +23,6 @@ export async function POST(request: NextRequest) {
     }
 
     const parsed = JSON.parse(jsonMatch[0]);
-
     return NextResponse.json(parsed);
   } catch (error) {
     console.error("Interpret API error:", error);

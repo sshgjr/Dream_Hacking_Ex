@@ -6,18 +6,20 @@ export default function Home() {
     <div className="relative min-h-screen flex flex-col items-center justify-center px-5 page-enter">
       <SplineBackground />
 
-      <div className="relative z-10 w-full max-w-xl text-center">
+      <div className="relative z-10 w-full max-w-xl text-center stagger-enter">
         {/* Decorative top symbol */}
         <div
           className="mb-6 text-sm tracking-[0.3em] uppercase float-subtle"
           style={{ color: 'var(--gold)', fontFamily: 'var(--font-display)', opacity: 0.5 }}
         >
-          ✦ Oracle ✦
+          <span className="oracle-symbol">✦</span>
+          {' '}Oracle{' '}
+          <span className="oracle-symbol">✦</span>
         </div>
 
         {/* Title */}
         <h1
-          className="text-6xl md:text-7xl mb-3 tracking-tight"
+          className="text-6xl md:text-7xl mb-3 tracking-tight title-glow"
           style={{
             fontFamily: 'var(--font-display)',
             fontWeight: 300,
@@ -43,7 +45,9 @@ export default function Home() {
           당신의 꿈을 해독합니다
         </p>
 
-        <DreamInput />
+        <div>
+          <DreamInput />
+        </div>
 
         {/* Bottom decoration */}
         <div
